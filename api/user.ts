@@ -34,12 +34,14 @@ router.post("/register", (req, res) => {
 
     conn.query(sql, (err, result) => {
         if(err){
-            res.status(400)
-            throw err;
-        };
-        res.status(201).json({
+            res.status(400).json({
+                response: false,
+            })
+        } else {
+            res.status(201).json({
             response: true,
             affected_row: result.affectedRows,
         })
+        }
     })
 })
