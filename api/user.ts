@@ -76,16 +76,23 @@ router.post("/login", (req, res) => {
 
   conn.query(sql, (err, result) => {
     if (err) throw err;
-    if (result[0].password == userLogin.password) {
-      res.status(200).json({
-        message: "Login Complete",
-        response: true,
-      });
+    if (result != "") {
+      if (result[0].password == userLogin.password) {
+        res.status(200).json({
+          message: "Login Complete",
+          response: true,
+        });
+      } else {
+        res.status(200).json({
+          message: "Wrong password or gmail",
+          response: true,
+        });
+      }
     } else {
-      res.status(200).json({
-        message: "Wrong password or gmail",
-        response: true,
-      });
-    }
+        res.status(200).json({
+          message: "Wrong password or gmail",
+          response: true,
+        });
+      }
   });
 });
