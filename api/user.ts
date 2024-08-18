@@ -3,6 +3,7 @@ import { conn, queryAsync } from "../dbconnect";
 import mysql from "mysql";
 import { UserRegisterPost } from "../model/user_register_req";
 import { UserLoginPost } from "../model/user_login_req";
+import { UserEditPut } from "../model/user_edit_req";
 
 export const router = express.Router();
 
@@ -89,10 +90,37 @@ router.post("/login", (req, res) => {
         });
       }
     } else {
-        res.status(200).json({
-          message: "Wrong password or gmail",
-          response: false,
-        });
-      }
+      res.status(200).json({
+        message: "Wrong password or gmail",
+        response: false,
+      });
+    }
+  });
+});
+
+// User Edit Profile
+router.put("/edit", (req, res) => {
+  let newUserDetail: UserEditPut = req.body;
+
+  let sql = "UPDATE user SET name = ?, birth = ?, phone = ? WHERE email = ?";
+  sql = mysql.format(sql, [
+    newUserDetail.name,
+    newUserDetail.birth,
+    newUserDetail.phone,
+    newUserDetail.email,
+  ]);
+
+  conn.query(sql, (err, result) => {
+    if (err) {
+      res.status(400).json({
+        response: false,
+        message: "Update profile not completed",
+      });
+    } else {
+      res.status(201).json({
+        response: true,
+        message: "Update profile complete",
+      });
+    }
   });
 });
