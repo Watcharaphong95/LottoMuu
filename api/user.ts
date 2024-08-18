@@ -41,10 +41,13 @@ router.post("/register", (req, res) => {
         } else {
             res.status(201).json({
             response: true,
-            affected_row: result.affectedRows,
+            message: "affectedRows "+result.affectedRows,
         })
         }
     })
 })
 
-//
+// get user by email
+router.get("/:email", (req, res) => {
+
+});
