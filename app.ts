@@ -9,4 +9,7 @@ export const app = express();
 
 app.use(bodyParser.text());
 app.use(bodyParser.json());
+app.use("/", (req, res) => {
+    res.send("Hello world");
+})
 app.use("/user", user);
