@@ -33,7 +33,7 @@ router.post("/register", (req, res) => {
     ])
 
     conn.query(sql, (err, result) => {
-        if(err?.code == "1062"){
+        if(err){
             res.status(400).json({
                 response: false,
                 message: "This email already register",
@@ -46,3 +46,5 @@ router.post("/register", (req, res) => {
         }
     })
 })
+
+//
