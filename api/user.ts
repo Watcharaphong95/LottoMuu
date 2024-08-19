@@ -4,6 +4,7 @@ import mysql from "mysql";
 import { UserRegisterPost } from "../model/user_register_req";
 import { UserLoginPost } from "../model/user_login_req";
 import { UserEditPut } from "../model/user_edit_req";
+import { UserMoneyPut } from "../model/user_money_req";
 
 export const router = express.Router();
 
@@ -120,6 +121,50 @@ router.put("/edit", (req, res) => {
       res.status(201).json({
         response: true,
         message: "Update profile complete",
+      });
+    }
+  });
+});
+
+// Forget password
+router.put("/resetpass", (req, res) => {
+  let newUserDetail: UserLoginPost = req.body;
+
+  let sql = "UPDATE user SET password = ? WHERE email = ?";
+  sql = mysql.format(sql, [newUserDetail.password, newUserDetail.email]);
+
+  conn.query(sql, (err, result) => {
+    if (err) {
+      res.status(400).json({
+        response: false,
+        message: "Failed password not changed",
+      });
+    } else {
+      res.status(201).json({
+        response: true,
+        message: "Password has been changed completed",
+      });
+    }
+  });
+});
+
+// update money value
+router.put("/money", (req, res) => {
+  let userDetail: UserMoneyPut = req.body;
+
+  let sql = "UPDATE user SET money = ? WHERE email = ?";
+  sql = mysql.format(sql, [userDetail.money, userDetail.email]);
+
+  conn.query(sql, (err, result) => {
+    if (err) {
+      res.status(400).json({
+        response: false,
+        message: "Money has been not updated",
+      });
+    } else {
+      res.status(200).json({
+        response: true,
+        message: "Money has been updated",
       });
     }
   });
