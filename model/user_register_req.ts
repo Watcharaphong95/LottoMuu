@@ -4,13 +4,13 @@
 //
 //   const userRegisterPost = Convert.toUserRegisterPost(json);
 
-export interface UserRegisterPost {
-    uid:      number;
-    name:     string;
-    email:    string;
-    password: string;
-    money:    number;
-}
+    export interface UserRegisterPost {
+        uid:      number;
+        name:     string;
+        email:    string;
+        password: string;
+        money:    number;
+    }
 
 // Converts JSON strings to/from your types
 export class Convert {
