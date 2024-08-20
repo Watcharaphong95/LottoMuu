@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
     let lottoNum = req.body.numbers;
     let value =     lottoNum.map((num: any) => [num]);
 
-    let sql = "INSERT INTO lotto (number) VALUES(?)";
+    let sql = "INSERT INTO lotto (number) VALUES ?";
     sql = mysql.format(sql, [
         value
     ])
