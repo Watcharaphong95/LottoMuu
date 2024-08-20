@@ -40,3 +40,43 @@ router.post("/", (req, res) => {
         res.status(200).json({response: true, message: "Number has been updated"})
     })
 })
+
+// select lotto that not has been sell
+router.get("/notsell", (req, res) => {
+    let sql = "SELECT * FROM lotto WHERE sell = 0";
+
+    conn.query(sql, (err, result) => {
+        if(err) throw err;
+        res.status(200).json({response: true, result});
+    })
+})
+
+// select lotto that already sell
+router.get("/sell", (req, res) => {
+    let sql = "SELECT * FROM lotto WHERE sell != 0";
+
+    conn.query(sql, (err, result) => {
+        if(err) throw err;
+        res.status(200).json({response: true, result});
+    })
+})
+
+// random number from all lotto
+router.get("/jackpotall", (req, res) => {
+    let sql = "SELECT * FROM lotto WHERE sell = 0 ORDER BY RAND() LIMIT 5";
+
+    conn.query(sql, (err, result) => {
+        if(err) throw err;
+        res.status(200).json({response: true, result});
+    })
+})
+
+// random number from sell lotto
+router.get("/jackpotsell", (req, res) => {
+    let sql = "SELECT * FROM lotto WHERE sell != 0 ORDER BY RAND() LIMIT 5";
+
+    conn.query(sql, (err, result) => {
+        if(err) throw err;
+        res.status(200).json({response: true, result});
+    })
+})
