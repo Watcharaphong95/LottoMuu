@@ -26,12 +26,13 @@ router.get("/", (req, res) => {
 })
 
 // insert 100 lotto from random at admin
-router.post("/:num", (req, res) => {
-    let lottoNum = req.params.num;
+router.post("/", (req, res) => {
+    let lottoNum = req.body.numbers;
+    let value =     lottoNum.map((num: any) => [num]);
 
     let sql = "INSERT INTO lotto (number) VALUES(?)";
     sql = mysql.format(sql, [
-        lottoNum
+        value
     ])
 
     conn.query(sql, (err, result) => {
