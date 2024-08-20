@@ -85,7 +85,6 @@ router.get("/jackpotsell", (req, res) => {
 router.put("/jackpotall", (req, res) => {
   let lottoNum = req.body.numbers;
   let value = lottoNum.map((num: any) => [num]);
-
   let sql = "UPDATE lotto SET win = ? WHERE number = ?";
 
   let promises = lottoNum.map((num: any) => {
