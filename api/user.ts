@@ -104,11 +104,12 @@ router.post("/login", (req, res) => {
 router.put("/edit", (req, res) => {
   let newUserDetail: UserEditPut = req.body;
 
-  let sql = "UPDATE user SET name = ?, nickname = ?, birth = ?, phone = ? WHERE email = ?";
+  let sql = "UPDATE user SET name = ?, nickname = ?, birth = ?, gender = ?, phone = ? WHERE email = ?";
   sql = mysql.format(sql, [
     newUserDetail.name,
     newUserDetail.nickname,
     newUserDetail.birth,
+    newUserDetail.gender,
     newUserDetail.phone,
     newUserDetail.email,
   ]);
