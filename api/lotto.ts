@@ -82,9 +82,17 @@ router.get("/jackpotsell", (req, res) => {
 });
 
 // update Jackpot lotto from all lotto
-router.put("/jackpotall", (req, res) => {
+router.put("/jackpotall", async (req, res) => {
   let lottoNum = req.body.numbers;
   let value = lottoNum.map((num: any) => [num]);
+  let sql1 = "UPDATE lotto SET win = 0";
+    await new Promise((resolve, reject) => {
+      conn.query(sql1, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+
   let sql = "UPDATE lotto SET win = ? WHERE number = ?";
 
   let promises = lottoNum.map((num: any) => {
@@ -102,9 +110,16 @@ router.put("/jackpotall", (req, res) => {
 });
 
 // update Jackpot lotto from only lotto that has been sell
-router.put("/jackpotsell", (req, res) => {
+router.put("/jackpotsell", async (req, res) => {
 let lottoNum = req.body.numbers;
   let value = lottoNum.map((num: any) => [num]);
+  let sql1 = "UPDATE lotto SET win = 0";
+    await new Promise((resolve, reject) => {
+      conn.query(sql1, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
 
   let sql = "UPDATE lotto SET win = ? WHERE number = ? AND sell != ?";
 
