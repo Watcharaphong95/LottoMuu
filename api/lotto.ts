@@ -99,8 +99,9 @@ router.put("/jackpotall", async (req, res) => {
 
   let sql = "UPDATE lotto SET win = ? WHERE number = ?";
 
-  let promises = lottoNum.map((num: any) => {
-    let formattedSql = mysql.format(sql, [1, num]);
+  let winValues = [1, 2, 3, 4, 5];
+  let promises = lottoNum.map((num: any, index:number) => {
+    let formattedSql = mysql.format(sql, [winValues[index], num]);
 
     // Return a promise for each query
     return new Promise((resolve, reject) => {
@@ -127,8 +128,9 @@ let lottoNum = req.body.numbers;
 
   let sql = "UPDATE lotto SET win = ? WHERE number = ? AND sell != ?";
 
-  let promises = lottoNum.map((num: any) => {
-    let formattedSql = mysql.format(sql, [1, num, 0]);
+  let winValues = [1, 2, 3, 4, 5];
+  let promises = lottoNum.map((num: any, index:number) => {
+    let formattedSql = mysql.format(sql, [winValues[index], num, 0]);
 
     // Return a promise for each query
     return new Promise((resolve, reject) => {
