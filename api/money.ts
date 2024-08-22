@@ -45,7 +45,7 @@ router.get("/:uid/:type", (req, res) => {
   let uid = req.params.uid;
   let type = req.params.type;
 
-  let sql = "SELECT * FROM money WHERE m_uid = ? AND type = ?";
+  let sql = "SELECT * FROM money WHERE m_uid = ? AND type = ? ORDER BY date desc";
 
   sql = mysql.format(sql, [
       uid,
