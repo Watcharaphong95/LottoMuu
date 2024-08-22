@@ -29,6 +29,10 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   let lottoNum = req.body.numbers;
   let value = lottoNum.map((num: any) => [num]);
+  let sql1 = "DELETE FROM lotto";
+  conn.query(sql1, (err, result) => {
+    if(err) throw err;
+})
 
   let sql = "INSERT INTO lotto (number) VALUES ?";
   sql = mysql.format(sql, [value]);
