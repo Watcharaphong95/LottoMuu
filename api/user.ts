@@ -5,6 +5,7 @@ import { UserRegisterPost } from "../model/user_register_req";
 import { UserLoginPost } from "../model/user_login_req";
 import { UserEditPut } from "../model/user_edit_req";
 import { UserMoneyPut } from "../model/user_money_req";
+import { MoneyPostReq } from "../model/money_post_req";
 
 export const router = express.Router();
 
@@ -169,3 +170,33 @@ router.put("/money", (req, res) => {
     }
   });
 });
+
+// insert money into table money history
+router.post("/money", (req, res) => {
+  let moneyDetail: MoneyPostReq = req.body;
+  let sql = "INSERT INTO money (m_uid, value) VALUES (?,?)";
+
+  sql = mysql.format(sql, [
+    moneyDetail.m_uid,
+    moneyDetail.money
+  ])
+
+  conn.query(sql, (err, result) => {
+    if(err) throw err;
+    res.status(200).json({response: true,message: "Money has been add to history"});
+  })
+})
+
+// select record from money
+router.get("/money", (req, res) => {
+  let sql = "SELECT * FROM user";
+
+  conn.query(sql, (err, result) => {
+    if (err) throw err;
+    if (result != "") {
+      res.status(200).json({ result, response: true });
+    } else {
+      res.status(200).json({ response: false });
+    }
+  });
+})
