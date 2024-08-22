@@ -104,9 +104,10 @@ router.post("/login", (req, res) => {
 router.put("/edit", (req, res) => {
   let newUserDetail: UserEditPut = req.body;
 
-  let sql = "UPDATE user SET name = ?, birth = ?, phone = ? WHERE email = ?";
+  let sql = "UPDATE user SET name = ?, nickname = ?, birth = ?, phone = ? WHERE email = ?";
   sql = mysql.format(sql, [
     newUserDetail.name,
+    newUserDetail.nickname,
     newUserDetail.birth,
     newUserDetail.phone,
     newUserDetail.email,
@@ -170,33 +171,3 @@ router.put("/money", (req, res) => {
     }
   });
 });
-
-// insert money into table money history
-router.post("/money", (req, res) => {
-  let moneyDetail: MoneyPostReq = req.body;
-  let sql = "INSERT INTO money (m_uid, value) VALUES (?,?)";
-
-  sql = mysql.format(sql, [
-    moneyDetail.m_uid,
-    moneyDetail.money
-  ])
-
-  conn.query(sql, (err, result) => {
-    if(err) throw err;
-    res.status(200).json({response: true,message: "Money has been add to history"});
-  })
-})
-
-// select record from money
-router.get("/money", (req, res) => {
-  let sql = "SELECT * FROM user";
-
-  conn.query(sql, (err, result) => {
-    if (err) throw err;
-    if (result != "") {
-      res.status(200).json({ result, response: true });
-    } else {
-      res.status(200).json({ response: false });
-    }
-  });
-})

@@ -6,6 +6,7 @@
 
 export interface UserEditPut {
     name:  string;
+    nickname:  string;
     email: string;
     birth: string;
     phone: string;
