@@ -7,6 +7,7 @@
 export interface MoneyPostReq {
     m_uid: number;
     money: number;
+    type: number;
 }
 
 // Converts JSON strings to/from your types
