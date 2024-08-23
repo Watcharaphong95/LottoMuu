@@ -25,6 +25,16 @@ router.get("/", (req, res) => {
   });
 });
 
+// select only jackpot number
+router.get("/jackpotwin", (req, res) => {
+  let sql = "SELECT * FROM lotto WHERE win != 0 ORDER BY win asc";
+
+  conn.query(sql, (err, result) => {
+    if (err) throw err;
+    res.status(200).json({ response: true, result });
+  });
+});
+
 // insert 100 lotto from random at admin
 router.post("/", (req, res) => {
   let lottoNum = req.body.numbers;
