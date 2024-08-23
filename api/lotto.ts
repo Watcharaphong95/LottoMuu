@@ -82,7 +82,7 @@ router.get("/sell", (req, res) => {
 
 // random number from all lotto
 router.get("/jackpotall", (req, res) => {
-  let sql = "SELECT * FROM lotto WHERE sell = 0 ORDER BY RAND() LIMIT 5";
+  let sql = "SELECT * FROM lotto ORDER BY RAND() LIMIT 5";
 
   conn.query(sql, (err, result) => {
     if (err) throw err;
