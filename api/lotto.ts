@@ -46,6 +46,7 @@ router.delete("/", (req, res) => {
   let sql1 = "DELETE FROM lotto";
   conn.query(sql1, (err, result) => {
     if(err) throw err;
+    res.status(200).json({response:true});
 })
 })
 
