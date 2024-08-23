@@ -75,6 +75,6 @@ router.post("/add", (req, res) => {
   
     conn.query(sql, (err, result) => {
       if(err) throw err;
-      res.status(200).json({response: true,message: "Money has been add to history"});
+      res.status(201).json({response: true,message: "Money has been add to history"});
     })
   })

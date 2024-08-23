@@ -46,7 +46,7 @@ router.post("/", (req, res) => {
   conn.query(sql, (err, result) => {
     if (err) throw err;
     res
-      .status(200)
+      .status(201)
       .json({ response: true, message: "Number has been updated" });
   });
 });
