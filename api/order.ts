@@ -7,7 +7,7 @@ import { OrderPostReq } from "../model/order_post_req";
 export const router = express.Router();
 
 // show all list
-router.get("/:uid", (req, res) => {
+router.get("", (req, res) => {
     let sql = "SELECT * FROM list, lotto WHERE list_lid = lid ORDER BY date desc";
 
     conn.query(sql, (err, result) => {
