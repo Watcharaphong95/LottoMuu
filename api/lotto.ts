@@ -177,7 +177,7 @@ let lottoNum = req.body.numbers;
   router.get("/reward/:uid", (req, res) => {
     let uid = req.params.uid;
 
-    let sql = "SELECT * FROM lotto WHERE owner = ? AND reward = 0 ORDER BY win asc";
+    let sql = "SELECT * FROM lotto WHERE owner = ? AND win !=0 AND reward = 0 ORDER BY win asc";
     sql = mysql.format(sql, [uid]);
 
     conn.query(sql, (err, result) => {
