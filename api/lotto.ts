@@ -172,3 +172,16 @@ let lottoNum = req.body.numbers;
       res.status(200).json({response:true, message:("reward has been updated")})
     })
   });
+
+  // get when not rewarded
+  router.get("/reward/:uid", (req, res) => {
+    let uid = req.params.uid;
+
+    let sql = "SELECT * FROM lotto WHERE owner = ? AND reward = 0 ORDER BY win asc";
+    sql = mysql.format(sql, [uid]);
+
+    conn.query(sql, (err, result) => {
+      if(err) throw err;
+      res.status(200).json({response:true, result})
+    })
+  })
