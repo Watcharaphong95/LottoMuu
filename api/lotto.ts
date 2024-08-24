@@ -157,3 +157,18 @@ let lottoNum = req.body.numbers;
   });
   res.status(200).json({response: true})
   });
+
+  // update reward
+  router.put("/reward/:lid", (req, res) => {
+    let lid = req.params.lid;
+
+    let sql = "UPDATE lotto set reward = 1 WHERE lid = ?";
+
+    sql = mysql.format(sql, [
+      lid
+    ])
+    conn.query(sql, (err, result) => {
+      if(err) throw err;
+      res.status(200).json({response:true, message:("reward has been updated")})
+    })
+  });

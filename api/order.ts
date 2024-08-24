@@ -1,7 +1,7 @@
 import express, { response } from "express";
 import { conn, queryAsync } from "../dbconnect";
 import mysql from "mysql";
-import { BasketPostReq } from "../model/basket_post_req";
+import { OrderPostReq } from "../model/order_post_req";
 
 
 export const router = express.Router();
@@ -33,13 +33,12 @@ router.get("/:uid", (req, res) => {
 
 // insert to list uid
 router.post("/", (req, res) => {
-    let basketDetail: BasketPostReq = req.body;
+    let orderDetail: OrderPostReq = req.body;
+    let lidValue = req.body.list_lid;
+    let value = lidValue.map((lid: any) => [orderDetail.list_uid, lid]);
 
-    let sql = "INSERT INTO list (list_uid, list_lid) VALUES (?,?)";
-    sql = mysql.format(sql, [
-        basketDetail.b_uid,
-        basketDetail.b_lid
-    ])
+    let sql = "INSERT INTO list (list_uid, list_lid) VALUES ?";
+    sql = mysql.format(sql, [value])
 
     conn.query(sql, (err, result) => {
         if(err) throw err;
