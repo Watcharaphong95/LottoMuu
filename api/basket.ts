@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 router.get("/:uid", (req, res) => {
     let uid = req.params.uid;
 
-    let sql = "SELECT * FROM basket WHERE b_uid = ? ORDER BY date desc";
+    let sql = "SELECT * FROM basket, lotto WHERE b_lid = lid AND b_uid = ? ORDER BY date desc";
     sql = mysql.format(sql, [
         uid
     ])

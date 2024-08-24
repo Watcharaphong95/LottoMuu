@@ -7,6 +7,7 @@ import { router as lotto } from "./api/lotto";
 import { router as admin } from "./api/admin";
 import { router as money } from "./api/money";
 import { router as basket } from "./api/basket";
+import { router as order } from "./api/order";
 import bodyParser from "body-parser";
 
 export const app = express();
@@ -23,3 +24,4 @@ app.use("/lotto", lotto);
 app.use("/admin", admin);
 app.use("/money", money);
 app.use("/basket", basket);
+app.use("/order", order);
