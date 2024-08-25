@@ -42,6 +42,27 @@ router.post("/", (req, res) => {
 
     conn.query(sql, (err, result) => {
         if(err) throw err;
-        res.status(201).json({response:true, message:"Add to list complete"})
     })
+
+    let updatePromises = lidValue.map((lid: any) => {
+        let sql1 = "UPDATE lotto SET owner = ? WHERE lid = ?";
+        let formattedSql = mysql.format(sql1, [orderDetail.list_uid, lid]);
+
+        return new Promise<void>((resolve, reject) => {
+            conn.query(formattedSql, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve();
+            });
+        });
+    });
+
+    Promise.all(updatePromises)
+            .then(() => {
+                res.status(201).json({response: true, message: "Add to list complete"});
+            })
+            .catch((err) => {
+                res.status(500).json({response: false, message: err.sqlMessage});
+            });
 })
