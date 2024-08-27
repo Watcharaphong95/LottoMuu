@@ -6,6 +6,7 @@ import { UserLoginPost } from "../model/user_login_req";
 import { UserEditPut } from "../model/user_edit_req";
 import { UserMoneyPut } from "../model/user_money_req";
 import { MoneyPostReq } from "../model/money_post_req";
+import { UserGoogleLoginPost } from "../model/user_Glogin_req";
 
 export const router = express.Router();
 
@@ -66,6 +67,33 @@ router.get("/:email", (req, res) => {
         result,
         response: true,
       });
+    }
+  });
+});
+
+// Login use google (if no account in database create new one!)
+router.post("/login/google", (req, res) => {
+  let googleLogin: UserGoogleLoginPost = req.body;
+
+  let sql = "SELECT * FROM user WHERE email = ?"
+  sql = mysql.format(sql, [googleLogin.email]);
+  conn.query(sql, (err, result) => {
+    if(err) throw err;
+    if(result != ""){
+      res.status(200).json({
+        message: "Login Complete",
+        response: true,
+      });
+    } else {
+      let sql1 = "INSERT INTO user (name, email, money) VALUES (?,?,?)";
+      sql1 = mysql.format(sql1, [googleLogin.email, googleLogin.email, googleLogin.money ])
+      conn.query(sql1, (err, result) => {
+        if(err) throw err;
+        res.status(201).json({
+          response: true,
+          message: "affectedRows " + result.affectedRows,
+        });
+      })
     }
   });
 });
