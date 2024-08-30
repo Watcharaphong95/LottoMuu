@@ -45,7 +45,7 @@ router.post("/", (req, res) => {
     })
 
     let updatePromises = lidValue.map((lid: any) => {
-        let sql1 = "UPDATE lotto SET owner = ? WHERE lid = ?";
+        let sql1 = "UPDATE lotto SET owner = ?, sell = 1 WHERE lid = ?";
         let formattedSql = mysql.format(sql1, [orderDetail.list_uid, lid]);
 
         return new Promise<void>((resolve, reject) => {

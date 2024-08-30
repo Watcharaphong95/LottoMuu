@@ -10,10 +10,10 @@ export const conn = mysql.createPool({
 })
 // export const conn = mysql.createPool({
 //     connectionLimit: 10,
-//     host: "sql12.freesqldatabase.com",
-//     user: "sql12726717",
-//     password: "A8hfCKh7kx",
-//     database: "sql12726717",
+//     host: "sql12.freemysqlhosting.net",
+//     user: "sql12728153",
+//     password: "rkpi3VbjuF",
+//     database: "sql12728153",
 // })
 
 export const queryAsync = util.promisify(conn.query).bind(conn);
