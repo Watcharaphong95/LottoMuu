@@ -55,10 +55,10 @@ router.post("/", (req, res) => {
 router.delete("/", (req, res) => {
   let sql1 = "DELETE FROM lotto";
   conn.query(sql1, (err, result) => {
-    if(err) throw err;
-    res.status(200).json({response:true});
-})
-})
+    if (err) throw err;
+    res.status(200).json({ response: true });
+  });
+});
 
 // select lotto that not has been sell
 router.get("/notsell", (req, res) => {
@@ -103,19 +103,25 @@ router.get("/jackpotsell", (req, res) => {
 // update Jackpot lotto from all lotto
 router.put("/jackpotall", async (req, res) => {
   let lottoNum = req.body.numbers;
+  let sql2 = "DELETE FROM basket";
+
+  conn.query(sql2, (err, result) => {
+    if (err) throw err;
+  });
+
   let value = lottoNum.map((num: any) => [num]);
   let sql1 = "UPDATE lotto SET win = 0";
-    await new Promise((resolve, reject) => {
-      conn.query(sql1, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
+  await new Promise((resolve, reject) => {
+    conn.query(sql1, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
     });
+  });
 
   let sql = "UPDATE lotto SET win = ? WHERE number = ?";
 
   let winValues = [1, 2, 3, 4, 5];
-  let promises = lottoNum.map((num: any, index:number) => {
+  let promises = lottoNum.map((num: any, index: number) => {
     let formattedSql = mysql.format(sql, [winValues[index], num]);
 
     // Return a promise for each query
@@ -126,25 +132,31 @@ router.put("/jackpotall", async (req, res) => {
       });
     });
   });
-  res.status(200).json({response: true})
+  res.status(200).json({ response: true });
 });
 
 // update Jackpot lotto from only lotto that has been sell
 router.put("/jackpotsell", async (req, res) => {
-let lottoNum = req.body.numbers;
+  let lottoNum = req.body.numbers;
+  let sql2 = "DELETE FROM basket";
+
+  conn.query(sql2, (err, result) => {
+    if (err) throw err;
+  });
+
   let value = lottoNum.map((num: any) => [num]);
   let sql1 = "UPDATE lotto SET win = 0";
-    await new Promise((resolve, reject) => {
-      conn.query(sql1, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
+  await new Promise((resolve, reject) => {
+    conn.query(sql1, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
     });
+  });
 
   let sql = "UPDATE lotto SET win = ? WHERE number = ? AND sell != ?";
 
   let winValues = [1, 2, 3, 4, 5];
-  let promises = lottoNum.map((num: any, index:number) => {
+  let promises = lottoNum.map((num: any, index: number) => {
     let formattedSql = mysql.format(sql, [winValues[index], num, 0]);
 
     // Return a promise for each query
@@ -155,33 +167,34 @@ let lottoNum = req.body.numbers;
       });
     });
   });
-  res.status(200).json({response: true})
+  res.status(200).json({ response: true });
+});
+
+// update reward
+router.put("/reward/:lid", (req, res) => {
+  let lid = req.params.lid;
+
+  let sql = "UPDATE lotto set reward = 1 WHERE lid = ?";
+
+  sql = mysql.format(sql, [lid]);
+  conn.query(sql, (err, result) => {
+    if (err) throw err;
+    res
+      .status(200)
+      .json({ response: true, message: "reward has been updated" });
   });
+});
 
-  // update reward
-  router.put("/reward/:lid", (req, res) => {
-    let lid = req.params.lid;
+// get when not rewarded
+router.get("/reward/:uid", (req, res) => {
+  let uid = req.params.uid;
 
-    let sql = "UPDATE lotto set reward = 1 WHERE lid = ?";
+  let sql =
+    "SELECT * FROM lotto WHERE owner = ? AND win !=0 AND reward = 0 ORDER BY win asc";
+  sql = mysql.format(sql, [uid]);
 
-    sql = mysql.format(sql, [
-      lid
-    ])
-    conn.query(sql, (err, result) => {
-      if(err) throw err;
-      res.status(200).json({response:true, message:("reward has been updated")})
-    })
+  conn.query(sql, (err, result) => {
+    if (err) throw err;
+    res.status(200).json({ response: true, result });
   });
-
-  // get when not rewarded
-  router.get("/reward/:uid", (req, res) => {
-    let uid = req.params.uid;
-
-    let sql = "SELECT * FROM lotto WHERE owner = ? AND win !=0 AND reward = 0 ORDER BY win asc";
-    sql = mysql.format(sql, [uid]);
-
-    conn.query(sql, (err, result) => {
-      if(err) throw err;
-      res.status(200).json({response:true, result})
-    })
-  })
+});
