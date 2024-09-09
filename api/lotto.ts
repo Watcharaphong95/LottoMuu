@@ -21,6 +21,10 @@ router.get("/", (req, res) => {
         response: true,
         result,
       });
+    }else {
+      res.status(200).json({
+        response: false,
+      });
     }
   });
 });
